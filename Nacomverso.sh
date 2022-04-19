@@ -53,4 +53,4 @@
 #Public License instead of this License.  But first, please read
 #<https://www.gnu.org/licenses/why-not-lgpl.html>.
 
-/bin/python3 /home/$USER/source/Nacomverso/Programa.py
+/bin/python3 /home/$USER/Downloads/Nacomverso-main/Programa.py
