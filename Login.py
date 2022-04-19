@@ -253,7 +253,7 @@ class Acesso:
         personagem_mana = self.lista_raca_mana[s_raca]
         personagem_experiencia = 0
 
-        print("\n\n\n" + negrito_amarelo("Confirmndo os dados"))
+        print("\n\n\n" + negrito_amarelo("Confirmando os dados"))
         print(negrito_ciano("Nome: ") + negrito_azul(personagem_nome))
         print(negrito_ciano("Sexo: ") + negrito_azul(personagem_sexo))
         print(negrito_ciano("Raça: ") + negrito_azul(personagem_raca))
