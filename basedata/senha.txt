@@ -1,0 +1,4 @@
+FONTE: ns1.gruponcgp.com.br / ns2.gruponcgp.com.br
+DB: gruponcgp_rpg
+USUARIO: gruponcgp_osvaldo
+SENHA: 6sKghAW&p3e3

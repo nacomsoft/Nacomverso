@@ -1,61 +1,9 @@
 
-#                     END OF TERMS AND CONDITIONS
-#
-#           How to Apply These Terms to Your New Programs
-#
-#  If you develop a new program, and you want it to be of the greatest
-#possible use to the public, the best way to achieve this is to make it
-#free software which everyone can redistribute and change under these terms.
-#
-#  To do so, attach the following notices to the program.  It is safest
-#to attach them to the start of each source file to most effectively
-#state the exclusion of warranty; and each file should have at least
-#the "copyright" line and a pointer to where the full notice is found.
-#
-#    <one line to give the program's name and a brief idea of what it does.>
-#    Copyright (C) <year>  <name of author>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-#Also add information on how to contact you by electronic and paper mail.
-#
-#  If the program does terminal interaction, make it output a short
-#notice like this when it starts in an interactive mode:
-#
-#    Nacomverso Copyright (C) 2022  NACOM by Grupo NCGP
-#    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-#    This is free software, and you are welcome to redistribute it
-#    under certain conditions; type `show c' for details.
-#
-#The hypothetical commands `show w' and `show c' should show the appropriate
-#parts of the General Public License.  Of course, your program's commands
-#might be different; for a GUI interface, you would use an "about box".
-#
-# You should also get your employer (if you work as a programmer) or school,
-#if any, to sign a "copyright disclaimer" for the program, if necessary.
-#For more information on this, and how to apply and follow the GNU GPL, see
-#<https://www.gnu.org/licenses/>.
-#
-#  The GNU General Public License does not permit incorporating your program
-#into proprietary programs.  If your program is a subroutine library, you
-#may consider it more useful to permit linking proprietary applications with
-#the library.  If this is what you want to do, use the GNU Lesser General
-#Public License instead of this License.  But first, please read
-#<https://www.gnu.org/licenses/why-not-lgpl.html>.
 
+from re import I
 from TextColor import*
 import getpass
+from equipamentos import *
 
 class Acesso:
 
@@ -92,8 +40,28 @@ class Acesso:
         self.lista_raca_sorte = [30, 0, 0, 0, 20, 20, 0, 30, 10, 10, 0, 0, 20, 10, 30, 0, 0, 20, 0, 0]
         self.lista_raca_vida = [40, 20, 8, 7, 60, 60, 200, 15, 8, 60, 45, 12, 18, 40, 60, 10, 7, 25, 10, 200]
         self.lista_raca_mana = [20, 40, 90, 100, 100, 100, 100, 40, 30, 50, 70, 30, 70, 30, 50, 30, 20, 30, 70, 80]
+
+        self.lista_de_armas_dados = [Armas().classe_arco, Armas().classe_espada_curta, Armas().classe_bastao, Armas().classe_cajado_clerigo, Armas().classe_escudo, Armas().classe_faca, Armas().classe_lanca, Armas().classe_punhos, Armas().classe_cajado_mago, Armas().classe_espada_longa]
+
         self.dados_personagem = []
 
+    def simplificador_de_vetor(self, vetor):
+        partes = len(vetor)
+        partes -= 1
+        vetor_saida = [str()]
+        vetor_palavra = [str()]
+        while(partes >= 0):
+            palavra_suja = str(vetor[partes])
+            vetor_palavra = palavra_suja.split("\n")
+            vetor_saida += [vetor_palavra[0]]
+            partes -= 1 
+        return vetor_saida
+
+    def simplificador(self, parametro):
+        frase = str(parametro)
+        vetor = frase.split("\n")
+        transformada = vetor[0]
+        return transformada
 
     def menu_inicial(self):
         menu_repetidor = True
@@ -168,7 +136,29 @@ class Acesso:
                         menu_login_repedidor = True
 
     def verificador_de_senha(self, vusuario, vsenha):
-        verificador = True
+
+        dados_login = open("Login.txt", "r")
+        vetor_login = dados_login.readlines()
+        dados_login.close()
+        vetor_login = self.simplificador_de_vetor(vetor_login)
+        verificador = False
+        if(vetor_login[3] == vusuario):
+            if(vetor_login[1] == vsenha):
+                verificador = True
+            else:
+                verificador == False
+        elif(vetor_login[2] == vusuario):
+            if(vetor_login[1] == vsenha):
+                verificador = True
+            else:
+                verificador == False
+        else:
+            verificador == False
+
+        if(verificador):
+            self.usuario = vetor_login[0]
+            self.senha = vetor_login[2]
+            self.email = vetor_login[1]
         return verificador    
 
     def redefinir_senha(self):
@@ -207,13 +197,23 @@ class Acesso:
             confirmar_senha = str(getpass.getpass())
             if(criar_senha == confirmar_senha):
                 senha_nao_confirmada = False
+                self.senha = criar_senha
+                self.usuario = criar_usuario
+                self.email = criar_email
             else:
                 print(vermelho("As duas senhas não coincidem!"))
                 senha_nao_confirmada = True
                 print(vermelho("Tente novamente"))
-        #Criar script para cadastrar no banco de dados
+        self.salvar_login()
         print(azul("Conta criada com sucesso!"))
         self.criar_personagem()
+
+    def salvar_login(self):
+        dados = [self.usuario + "\n", self.email + "\n", self.senha + "\n"]
+        dados_de_login = open("Login.txt", "w")
+        dados_de_login.writelines(dados)
+        dados_de_login.close()
+        
 
     def criar_personagem(self):
         print("\n\n" + negrito_amarelo("Menu de Criação de personagem"))
@@ -252,6 +252,8 @@ class Acesso:
         personagem_proeficiencia_ferramentas = self.lista_classe_ferramentas[s_classe]
         personagem_mana = self.lista_raca_mana[s_raca]
         personagem_experiencia = 0
+        personagem_arma_dados = Equipamento()
+        personagem_arma_dados = self.lista_de_armas_dados[s_classe]
 
         print("\n\n\n" + negrito_amarelo("Confirmando os dados"))
         print(negrito_ciano("Nome: ") + negrito_azul(personagem_nome))
@@ -272,7 +274,7 @@ class Acesso:
         print(negrito_ciano("Armas: ") + negrito_azul(personagem_proeficiencia_armas))
         print(negrito_ciano("Ferramentas: ") + negrito_azul(personagem_proeficiencia_ferramentas))
         print(negrito_ciano("Arma Principal: ") + negrito_azul(personagem_proeficiencia_arma_principal))
-        self.dados_personagem = [personagem_nome, personagem_sexo, personagem_classe, personagem_raca, personagem_agilidade, personagem_forca, personagem_carisma, personagem_resistencia, personagem_inteligencia, personagem_magia, personagem_sorte, personagem_proeficiencia_armaduras, personagem_proeficiencia_armas, personagem_proeficiencia_arma_principal, personagem_proeficiencia_ferramentas, personagem_vida, personagem_mana, personagem_experiencia]
+        self.dados_personagem = [personagem_nome, personagem_sexo, personagem_classe, personagem_raca, personagem_agilidade, personagem_forca, personagem_carisma, personagem_resistencia, personagem_inteligencia, personagem_magia, personagem_sorte, personagem_proeficiencia_armaduras, personagem_proeficiencia_armas, personagem_proeficiencia_arma_principal, personagem_proeficiencia_ferramentas, personagem_vida, personagem_mana, personagem_experiencia, personagem_arma_dados]
         
 class Personagem:
     def __init__(self, ent_usuario):
@@ -296,6 +298,7 @@ class Personagem:
         self.vida = 0
         self.mana = 0
         self.experiencia = 0
+        self.arma_dados = Equipamento()
 
     def carregar_inicial(self, lista_de_dados):
         self.nome = lista_de_dados[0]
@@ -315,8 +318,10 @@ class Personagem:
         self.proeficiencia_ferramentas = lista_de_dados[14]
         self.vida = lista_de_dados[15]
         self.mana = lista_de_dados[16]
-        self.experiencia = lista_de_dados[17]        
+        self.experiencia = lista_de_dados[17]    
+        self.arma_dados = lista_de_dados[18]
+    
 
     def retornar_dados(self):
-        retorno = [self.nome, self.sexos, self.classe, self.raca, self.agilidade, self.forca, self.carisma, self.resistencia, self.inteligencia, self.magia, self.sorte, self.proeficiencia_armaduras, self.proeficiencia_armas, self.proeficiencia_arma_principal, self.proeficiencia_ferramentas, self.vida, self.mana, self.experiencia]
+        retorno = [self.nome, self.sexos, self.classe, self.raca, self.agilidade, self.forca, self.carisma, self.resistencia, self.inteligencia, self.magia, self.sorte, self.proeficiencia_armaduras, self.proeficiencia_armas, self.proeficiencia_arma_principal, self.proeficiencia_ferramentas, self.vida, self.mana, self.experiencia, self.arma_dados]
         return retorno

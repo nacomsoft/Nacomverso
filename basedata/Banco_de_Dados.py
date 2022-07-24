@@ -1,3 +1,4 @@
+
 #                     END OF TERMS AND CONDITIONS
 #
 #           How to Apply These Terms to Your New Programs
@@ -53,4 +54,64 @@
 #Public License instead of this License.  But first, please read
 #<https://www.gnu.org/licenses/why-not-lgpl.html>.
 
-/bin/python3 /home/$USER/source/Nacomverso/Programa.py
+from Gerador_de_Blocos import*
+
+class Gerador_Banco:
+    def __init__(self):
+        self.usuarios = Criador_de_Blocos()
+        self.conector = Criador_de_Blocos()
+        self.personagens = Criador_de_Blocos()
+        self.espacos = Criador_de_Blocos()
+        self.objetos = Criador_de_Blocos()
+        self.logsistema = Criador_de_Blocos()
+        self.chaves_criptografadas = []
+        self.chaves_de_ativacao = []
+
+    def criar(self):
+        self.usuarios.criar()
+        self.chaves_criptografadas[0] = self.usuarios.chave_cripto
+        self.chaves_de_ativacao[0] = self.usuarios.chave_criacao
+        self.conector.criar()
+        self.chaves_criptografadas[1] = self.conector.chave_cripto
+        self.chaves_de_ativacao[1] = self.conector.chave_criacao
+        self.personagens.criar()
+        self.chaves_criptografadas[2] = self.personagens.chave_cripto
+        self.chaves_de_ativacao[2] = self.personagens.chave_criacao
+        self.espacos.criar()
+        self.chaves_criptografadas[3] = self.espacos.chave_cripto
+        self.chaves_de_ativacao[3] = self.espacos.chave_criacao
+        self.objetos.criar()
+        self.chaves_criptografadas[4] = self.objetos.chave_cripto
+        self.chaves_de_ativacao[4] = self.objetos.chave_criacao
+        self.logsistema.criar()
+        self.chaves_criptografadas[5] = self.logsistema.chave_cripto
+        self.chaves_de_ativacao[5] = self.logsistema.chave_criacao
+
+
+#USUÁRIOS
+
+# Modelo: "usuario"><"E-mail"><"Senha"
+
+#CLIENTES-Servidores
+
+# Modelo: "IP4 do Cliente"><"IP6 do Cliente"><"Dados"><"usuario"
+
+#PERSONAGENS
+
+# Modelo: Nome"><"Sexo"><"Raça"><"Classe"><"MP"><"HP"><"XP"><"AGILIDADE"><"FORÇA"><"CARISMA"><"RESISTÊNCIA"><"INTELIGÊNCIA"><"MAGIA"><"SORTE"><"Armaduras"><"Armas"><"Ferramentas"><"Arma Principal"><"usuario"
+
+#CYBER ESPAÇOS
+
+
+# Modelo: "Nome do Lugar"><"tipo"><"pisos"><"comprimento_dos_pisos"><"largura_dos_pisos"><"Capacidade_de_Armazenamento"><"usuario"
+
+#OBJETOS
+
+# Modelo: "Nome do Objeto"><"Descrição"><"usuario"
+
+#LOGS
+
+# Modelo de logs: LOG><dado
+
+
+

@@ -1,3 +1,4 @@
+
 #                     END OF TERMS AND CONDITIONS
 #
 #           How to Apply These Terms to Your New Programs
@@ -53,4 +54,9 @@
 #Public License instead of this License.  But first, please read
 #<https://www.gnu.org/licenses/why-not-lgpl.html>.
 
-/bin/python3 /home/$USER/source/Nacomverso/Programa.py
+from TextColor import*
+
+def conversor_list(entrada):
+    arquivo = str(entrada)
+    retorno = arquivo.split("><")
+    return retorno
